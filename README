@@ -1,0 +1,11 @@
+go run main.go
+go build main.go 
+go install main.go 
+go clean
+
+go tool dist list 
+
+//to build specific to os 
+env GOOS=linux GOARCH=386 go build main.go 
+
+docker build -t go-app-normal:latest . 
