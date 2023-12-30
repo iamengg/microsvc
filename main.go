@@ -1,46 +1,46 @@
 package main
 
+//docker build -t go-app:latest .
+//go distroless image
+//googlecontainer tools
+//To run url
+//http://localhost/books/hi/page/123
+
 import (
 	"fmt"
 	"log"
 	"net/http"
+
+	geo "./geometry"
+
+	"github.com/gorilla/mux"
 )
 
-func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, you've requested %s, token is %s\n", r.URL.Path, r.URL.Query().Get("token"))
-	})
+func handler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	title := vars["title"]
+	page := vars["page"]
 
-	fs := http.FileServer(http.Dir("static/"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	log.Println("Web server has started")
-	log.Fatal(http.ListenAndServe(":3080", nil))
+	fmt.Fprintf(w, "You've requested the book: %s on page %s\n", title, page)
 }
 
-// package main
+func handlerArea(w http.ResponseWriter, r *http.Request) {
+	res := geo.Area(3, 5)
+	fmt.Fprintf(w, "area is %f\n", res)
+}
 
-// import (
-// 	"fmt"
+func msg(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Welcome to my website!")
+}
 
-// 	geo "github.com/iamengg/microsvc/geometry"
-// 	"rsc.io/quote"
-// )
+func main() {
+	fmt.Println("Start of microservice architecture")
+	r := mux.NewRouter()
 
-// func main() {
-// 	fmt.Println("Main package")
-// 	fmt.Println(quote.Go())
-// 	a, p := rectProps(7, 4.1)
-// 	fmt.Printf("Area of rectangle is %v, %v\n", a, p)
+	//handlers
+	r.HandleFunc("/books/{title}/page/{page}", handler)
+	r.HandleFunc("/v1/area", handlerArea)
+	r.HandleFunc("/v1/msg", msg)
+	log.Fatal(http.ListenAndServe("localhost:8080", r))
 
-// 	var dayOfTheMonth = map[string]int{"Jan": 31, "Feb": 22}
-// 	fmt.Println(dayOfTheMonth)
-
-// 	fmt.Println(geo.Area(1, 44))
-
-// }
-
-// func rectProps(length, width float64) (area, perimeter float64) {
-// 	area = length * width
-// 	perimeter = (length + width) * 2
-// 	return
-// }
+}
