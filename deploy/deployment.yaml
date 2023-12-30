@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-msc-deployment
+  labels:
+    app: go-msc 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-msc 
+  template:
+    metadata:
+      labels:
+        app: go-msc 
+    spec:
+      containers:
+      - name: go-microsvc
+        image: go-apps-ms:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80

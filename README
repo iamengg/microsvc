@@ -9,3 +9,8 @@ go tool dist list
 env GOOS=linux GOARCH=386 go build main.go 
 
 docker build -t go-app-normal:latest . 
+
+GoogleContainerTools/distroless language focused docker 
+
+
+docker run -d -p 3080:3080 --name webapps imageName 
