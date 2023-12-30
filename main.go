@@ -11,7 +11,7 @@ import (
 	"log"
 	"net/http"
 
-	geo "github.com/iamengg/microsvc/devops-made-easy/geometry"
+	geo "github.com/iamengg/devops-made-easy/microsvc/geometry"
 
 	"github.com/gorilla/mux"
 )
